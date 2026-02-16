@@ -1,0 +1,786 @@
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LF — Dexterity &amp; Freedom</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@formspree/js@1.5.0/dist/formspree.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&amp;family=Montserrat:wght@300;400;500;600&amp;family=Cairo:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes shimmer {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 20px rgba(212, 175, 55, 0.3); }
+      50% { box-shadow: 0 0 40px rgba(212, 175, 55, 0.6); }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    .fade-in-up { animation: fadeInUp 0.8s ease-out forwards; }
+    .shimmer-text {
+      background: linear-gradient(90deg, #D4AF37 0%, #F4E4BA 50%, #D4AF37 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 3s linear infinite;
+    }
+    .pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+    .float-animation { animation: float 3s ease-in-out infinite; }
+    .gold-gradient { background: linear-gradient(135deg, #D4AF37 0%, #B8962E 50%, #D4AF37 100%); }
+    .gold-border { border: 1px solid #D4AF37; }
+    .gold-border-hover:hover { border-color: #F4E4BA; box-shadow: 0 0 20px rgba(212, 175, 55, 0.4); }
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #D4AF37;
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after { width: 100%; }
+    .card-hover { transition: all 0.4s ease; }
+    .card-hover:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(212, 175, 55, 0.2); }
+    .input-field {
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      transition: all 0.3s ease;
+    }
+    .input-field:focus {
+      border-color: #D4AF37;
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+      outline: none;
+    }
+    .section-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #D4AF37, transparent);
+    }
+    .geometric-pattern {
+      background-image: 
+        linear-gradient(30deg, rgba(212, 175, 55, 0.03) 12%, transparent 12.5%, transparent 87%, rgba(212, 175, 55, 0.03) 87.5%),
+        linear-gradient(150deg, rgba(212, 175, 55, 0.03) 12%, transparent 12.5%, transparent 87%, rgba(212, 175, 55, 0.03) 87.5%),
+        linear-gradient(30deg, rgba(212, 175, 55, 0.03) 12%, transparent 12.5%, transparent 87%, rgba(212, 175, 55, 0.03) 87.5%),
+        linear-gradient(150deg, rgba(212, 175, 55, 0.03) 12%, transparent 12.5%, transparent 87%, rgba(212, 175, 55, 0.03) 87.5%);
+      background-size: 80px 140px;
+      background-position: 0 0, 0 0, 40px 70px, 40px 70px;
+    }
+    .scroll-smooth { scroll-behavior: smooth; }
+    html { font-family: 'Montserrat', sans-serif; }
+    html[lang="ar"] { font-family: 'Cairo', sans-serif; direction: rtl; }
+    h1, h2, h3, h4, h5, h6 { font-family: 'Cinzel', serif; }
+    html[lang="ar"] h1, html[lang="ar"] h2, html[lang="ar"] h3, html[lang="ar"] h4, html[lang="ar"] h5, html[lang="ar"] h6 { font-family: 'Cairo', sans-serif; }
+    .delay-100 { animation-delay: 0.1s; }
+    .delay-200 { animation-delay: 0.2s; }
+    .delay-300 { animation-delay: 0.3s; }
+    .delay-400 { animation-delay: 0.4s; }
+    .delay-500 { animation-delay: 0.5s; }
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 16px 24px;
+      border-radius: 8px;
+      z-index: 1000;
+      transform: translateX(150%);
+      transition: transform 0.3s ease;
+    }
+    html[lang="ar"] .toast { right: auto; left: 20px; transform: translateX(-150%); }
+    html[lang="ar"] .toast.show { transform: translateX(0); }
+    .toast.show { transform: translateX(0); }
+    .toast-success { background: #166534; color: white; }
+    .toast-error { background: #991b1b; color: white; }
+    .lang-btn.active { background: #D4AF37; color: black; border-color: #D4AF37; }
+    .lang-selector {
+      display: flex;
+      gap: 8px;
+      padding: 12px;
+      background: rgba(0, 0, 0, 0.8);
+      border: 1px solid #D4AF37;
+      border-radius: 4px;
+    }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full bg-black text-white overflow-x-hidden scroll-smooth">
+  <div id="app-wrapper" class="h-full w-full overflow-auto"><!-- Navigation Bar -->
+   <nav id="navbar" class="fixed top-0 left-0 right-0 z-40 transition-all duration-300 bg-transparent">
+    <div class="max-w-7xl mx-auto px-6 py-4">
+     <div class="flex items-center justify-between"><!-- Mobile Menu Button --> <button id="mobile-menu-btn" class="lg:hidden text-amber-400 hover:text-amber-300 transition-colors">
+       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+       </svg></button> <!-- Left Navigation -->
+      <div class="hidden lg:flex items-center gap-16"><a href="#home" class="nav-link text-sm tracking-widest text-gray-300 hover:text-amber-400 transition-colors data-home">HOME</a> <a href="#about" class="nav-link text-sm tracking-widest text-gray-300 hover:text-amber-400 transition-colors data-about">ABOUT</a> <a href="#entrepreneurs" class="nav-link text-sm tracking-widest text-gray-300 hover:text-amber-400 transition-colors data-entrepreneurs">ENTREPRENEURS</a>
+      </div><!-- Center Logo --> <a href="#home" class="flex items-center space-x-2">
+       <svg class="w-12 h-12" viewbox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="48" stroke="#D4AF37" stroke-width="2" /> <path d="M25 50C25 40 35 35 45 40C50 42 50 48 45 50C40 52 35 48 40 45" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round" /> <path d="M75 50C75 40 65 35 55 40C50 42 50 48 55 50C60 52 65 48 60 45" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round" /> <path d="M45 50L55 50" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round" /> <text x="50" y="75" text-anchor="middle" fill="#D4AF37" font-family="Cinzel" font-size="14" font-weight="600">
+         LF
+        </text>
+       </svg></a> <!-- Right Navigation with Language Selector -->
+      <div class="hidden lg:flex items-center gap-8">
+       <div class="flex items-center gap-16"><a href="#investors" class="nav-link text-sm tracking-widest text-gray-300 hover:text-amber-400 transition-colors data-investors">INVESTORS</a> <a href="#register" class="nav-link text-sm tracking-widest text-gray-300 hover:text-amber-400 transition-colors data-register">REGISTER</a> <a href="#contact" class="nav-link text-sm tracking-widest text-gray-300 hover:text-amber-400 transition-colors data-contact">CONTACT</a>
+       </div><!-- Language Selector -->
+       <div class="lang-selector"><button onclick="changeLanguage('en')" id="lang-en" class="lang-btn active px-3 py-1 rounded-sm text-xs font-semibold text-white border border-amber-400/50 hover:bg-amber-400/10 transition-all duration-300">EN</button> <button onclick="changeLanguage('ar')" id="lang-ar" class="lang-btn px-3 py-1 rounded-sm text-xs font-semibold text-white border border-amber-400/30 hover:bg-amber-400/10 transition-all duration-300">العربية</button> <button onclick="changeLanguage('fr')" id="lang-fr" class="lang-btn px-3 py-1 rounded-sm text-xs font-semibold text-white border border-amber-400/30 hover:bg-amber-400/10 transition-all duration-300">FR</button>
+       </div>
+      </div>
+      <div class="lg:hidden w-6"></div>
+     </div><!-- Mobile Menu -->
+     <div id="mobile-menu" class="lg:hidden hidden mt-4 pb-4 border-t border-amber-400/20">
+      <div class="flex flex-col space-y-4 pt-4"><a href="#home" class="text-sm tracking-widest text-gray-300 hover:text-amber-400 transition-colors data-home">HOME</a> <a href="#about" class="text-sm tracking-widest text-gray-300 hover:text-amber-400 transition-colors data-about">ABOUT</a> <a href="#entrepreneurs" class="text-sm tracking-widest text-gray-300 hover:text-amber-400 transition-colors data-entrepreneurs">ENTREPRENEURS</a> <a href="#investors" class="text-sm tracking-widest text-gray-300 hover:text-amber-400 transition-colors data-investors">INVESTORS</a> <a href="#register" class="text-sm tracking-widest text-gray-300 hover:text-amber-400 transition-colors data-register">REGISTER</a> <a href="#contact" class="text-sm tracking-widest text-gray-300 hover:text-amber-400 transition-colors data-contact">CONTACT</a> <!-- Mobile Language Selector -->
+       <div class="lang-selector mt-4 flex justify-center"><button onclick="changeLanguage('en')" id="lang-en-mobile" class="lang-btn active px-3 py-1 rounded-sm text-xs font-semibold text-white border border-amber-400/50 hover:bg-amber-400/10 transition-all duration-300">EN</button> <button onclick="changeLanguage('ar')" id="lang-ar-mobile" class="lang-btn px-3 py-1 rounded-sm text-xs font-semibold text-white border border-amber-400/30 hover:bg-amber-400/10 transition-all duration-300">العربية</button> <button onclick="changeLanguage('fr')" id="lang-fr-mobile" class="lang-btn px-3 py-1 rounded-sm text-xs font-semibold text-white border border-amber-400/30 hover:bg-amber-400/10 transition-all duration-300">FR</button>
+       </div>
+      </div>
+     </div>
+    </div>
+   </nav><!-- Section 1: Hero -->
+   <section id="home" class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20"><!-- Animated Background -->
+    <div class="absolute inset-0 bg-gradient-to-b from-black via-gray-900 to-black">
+     <div class="absolute inset-0 opacity-20">
+      <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-amber-400/10 rounded-full blur-3xl float-animation"></div>
+      <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-amber-400/10 rounded-full blur-3xl float-animation delay-300"></div>
+     </div><!-- Spotlight Effect -->
+     <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full">
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-1 h-32 bg-gradient-to-b from-amber-400/50 to-transparent"></div>
+      <div class="absolute top-32 left-1/2 -translate-x-1/2 w-96 h-96 bg-gradient-radial from-amber-400/5 to-transparent rounded-full"></div>
+     </div>
+    </div>
+    <div class="relative z-10 text-center px-6 max-w-5xl mx-auto"><!-- Animated Logo -->
+     <div class="mb-8 fade-in-up opacity-0">
+      <svg class="w-32 h-32 mx-auto float-animation" viewbox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="48" stroke="#D4AF37" stroke-width="1.5" opacity="0.6" /> <circle cx="50" cy="50" r="42" stroke="#D4AF37" stroke-width="1" opacity="0.3" /> <path d="M25 50C25 38 37 32 47 38C52 41 52 49 47 52C42 55 35 50 40 46" stroke="#D4AF37" stroke-width="2" stroke-linecap="round" /> <path d="M75 50C75 38 63 32 53 38C48 41 48 49 53 52C58 55 65 50 60 46" stroke="#D4AF37" stroke-width="2" stroke-linecap="round" /> <path d="M47 50L53 50" stroke="#D4AF37" stroke-width="2" stroke-linecap="round" /> <text x="50" y="78" text-anchor="middle" fill="#D4AF37" font-family="Cinzel" font-size="16" font-weight="700">
+        LF
+       </text>
+      </svg>
+     </div>
+     <h1 id="hero-headline" class="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 fade-in-up opacity-0 delay-100" style="font-family: 'Cinzel', serif;"><span class="shimmer-text">LF</span> <span class="text-white data-hero-bridge"> — The Bridge Between</span> <br><span class="text-amber-400 data-hero-vision">Vision</span> <span class="text-white data-hero-and"> and </span> <span class="text-amber-400 data-hero-capital">Capital</span></h1>
+     <p id="hero-subheadline" class="text-lg md:text-xl text-gray-400 mb-12 max-w-3xl mx-auto fade-in-up opacity-0 delay-200" style="font-family: 'Montserrat', sans-serif; font-style: italic;"><span class="data-hero-motto">"Let it work. Let it pass"</span></p>
+     <div class="flex flex-col sm:flex-row items-center justify-center gap-6 fade-in-up opacity-0 delay-300"><a href="#register-entrepreneur" class="group relative px-10 py-4 gold-border rounded-sm transition-all duration-300 gold-border-hover overflow-hidden"> <span class="relative z-10 text-amber-400 font-semibold tracking-widest text-sm group-hover:text-black transition-colors duration-300 data-laissez-faire">LET IT WORK</span>
+       <div class="absolute inset-0 bg-amber-400 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div></a> <a href="#register-investor" class="group relative px-10 py-4 gold-gradient rounded-sm transition-all duration-300 pulse-glow overflow-hidden"> <span class="relative z-10 text-black font-semibold tracking-widest text-sm data-laissez-passer">LEAVE IT PASS</span> </a>
+     </div><!-- Scroll Indicator -->
+     <div class="absolute bottom-8 left-1/2 -translate-x-1/2 fade-in-up opacity-0 delay-500">
+      <div class="w-6 h-10 border-2 border-amber-400/50 rounded-full flex justify-center">
+       <div class="w-1 h-3 bg-amber-400 rounded-full mt-2 animate-bounce"></div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Section Divider -->
+   <div class="section-divider w-full"></div><!-- Section 2: About Us -->
+   <section id="about" class="py-24 px-6 bg-gradient-to-b from-black via-gray-900/50 to-black">
+    <div class="max-w-5xl mx-auto">
+     <h2 id="about-title" class="text-3xl md:text-5xl font-bold text-amber-400 mb-4 text-center data-philosophy" style="font-family: 'Cinzel', serif;">The Philosophy</h2>
+     <p class="text-center text-gray-400 text-lg mb-12 data-by-smith"><span class="text-amber-400 font-semibold">By Adam Smith</span> — The Invisible Hand of Economics</p>
+     <div class="w-24 h-0.5 bg-gradient-to-r from-transparent via-amber-400 to-transparent mx-auto mb-12"></div><!-- Paragraph 1: Historical Impact -->
+     <div class="mb-12 p-8 border border-amber-400/20 rounded-sm bg-black/40">
+      <h3 class="text-xl font-bold text-amber-400 mb-4 data-hist-impact" style="font-family: 'Cinzel', serif;">Historical Economic Impact</h3>
+      <p class="text-gray-300 leading-relaxed text-lg" style="font-family: 'Montserrat', sans-serif;"><span class="data-about-text">Adam Smith's revolutionary principle fundamentally transformed economic thinking for centuries. By advocating for minimal government intervention and allowing markets to self-regulate through the "invisible hand," Smith challenged the restrictive mercantilism of his era. His philosophy demonstrated that when entrepreneurs are free to pursue their interests and consumers are free to choose, the market naturally allocates resources efficiently. This principle laid the foundation for modern capitalism, drove unprecedented economic growth, reduced poverty, and empowered individuals to create wealth. Laissez-faire economics became the cornerstone of prosperity in free societies worldwide.</span></p>
+     </div><!-- Paragraph 2: Connection to LF Project -->
+     <div class="p-8 border border-amber-400/20 rounded-sm bg-black/40">
+      <h3 class="text-xl font-bold text-amber-400 mb-4 data-lf-connect" style="font-family: 'Cinzel', serif;">LF Project Philosophy</h3>
+      <p class="text-gray-300 leading-relaxed text-lg" style="font-family: 'Montserrat', sans-serif;"><span class="data-lf-text">The LF Gateway embodies Adam Smith's timeless wisdom by creating a digital ecosystem where innovation thrives without unnecessary barriers. We believe in giving entrepreneurs the freedom to build ("Let It Work") and enabling investors to discover opportunities seamlessly ("Let It Pass"). By removing intermediaries, cutting through red tape, and fostering direct connections, LF channels the spirit of laissez-faire economics into modern venture capital. We trust in the power of human creativity and market forces to identify and nurture the most promising ideas, creating a new era of economic opportunity for Algeria and beyond.</span></p>
+     </div>
+     <div class="flex items-center justify-center gap-4 mt-12">
+      <div class="h-px w-16 bg-gradient-to-r from-transparent to-amber-400"></div>
+      <svg class="w-8 h-8 text-amber-400" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L12 22M2 12L22 12M5 5L19 19M19 5L5 19" stroke-linecap="round" />
+      </svg>
+      <div class="h-px w-16 bg-gradient-to-l from-transparent to-amber-400"></div>
+     </div>
+    </div>
+   </section><!-- Section Divider -->
+   <div class="section-divider w-full"></div><!-- Section 3: For Entrepreneurs -->
+   <section id="entrepreneurs" class="py-24 px-6 bg-black">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-16">
+      <h2 class="text-3xl md:text-5xl font-bold text-white mb-4" style="font-family: 'Cinzel', serif;"><span class="data-build-your">Build Your</span> <span class="text-amber-400 data-legacy">Legacy</span></h2>
+      <p class="text-gray-400 text-lg data-submit-startup">Submit your startup project, get vetted by experts, and get showcased to a network of premium investors.</p>
+     </div>
+     <div class="grid md:grid-cols-3 gap-8"><!-- Step 1 -->
+      <div class="card-hover p-8 bg-gradient-to-b from-gray-900/50 to-black border border-amber-400/20 rounded-sm text-center">
+       <div class="w-16 h-16 mx-auto mb-6 flex items-center justify-center">
+        <svg class="w-12 h-12 text-amber-400" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3" /> <path d="M12 2v4M12 18v4M2 12h4M18 12h4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+        </svg>
+       </div>
+       <h3 class="text-xl font-bold text-amber-400 mb-3 data-ideate" style="font-family: 'Cinzel', serif;">Ideate</h3>
+       <p class="text-gray-400 text-sm data-ideate-desc">Transform your vision into a compelling pitch that captures attention.</p>
+      </div><!-- Step 2 -->
+      <div class="card-hover p-8 bg-gradient-to-b from-gray-900/50 to-black border border-amber-400/20 rounded-sm text-center">
+       <div class="w-16 h-16 mx-auto mb-6 flex items-center justify-center">
+        <svg class="w-12 h-12 text-amber-400" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12l2 2 4-4" /> <path d="M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9c1.5 0 2.91.37 4.15 1.02" /> <path d="M21 3v4h-4" />
+        </svg>
+       </div>
+       <h3 class="text-xl font-bold text-amber-400 mb-3 data-evaluate" style="font-family: 'Cinzel', serif;">Evaluate</h3>
+       <p class="text-gray-400 text-sm data-evaluate-desc">Get vetted by industry experts who refine and validate your concept.</p>
+      </div><!-- Step 3 -->
+      <div class="card-hover p-8 bg-gradient-to-b from-gray-900/50 to-black border border-amber-400/20 rounded-sm text-center">
+       <div class="w-16 h-16 mx-auto mb-6 flex items-center justify-center">
+        <svg class="w-12 h-12 text-amber-400" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2v6m0 0l3-3m-3 3L9 5" /> <rect x="3" y="8" width="18" height="12" rx="2" /> <path d="M7 14h.01M12 14h.01M17 14h.01" />
+        </svg>
+       </div>
+       <h3 class="text-xl font-bold text-amber-400 mb-3 data-fund" style="font-family: 'Cinzel', serif;">Fund</h3>
+       <p class="text-gray-400 text-sm data-fund-desc">Connect with investors who believe in your vision and fuel your growth.</p>
+      </div>
+     </div>
+     <div class="text-center mt-12"><a href="#register-entrepreneur" class="inline-block px-10 py-4 gold-border rounded-sm text-amber-400 font-semibold tracking-widest text-sm transition-all duration-300 gold-border-hover data-submit-project"> SUBMIT YOUR PROJECT </a>
+     </div>
+    </div>
+   </section><!-- Section Divider -->
+   <div class="section-divider w-full"></div><!-- Section 4: For Investors -->
+   <section id="investors" class="py-24 px-6 bg-black geometric-pattern">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-16">
+      <h2 class="text-3xl md:text-5xl font-bold text-white mb-4" style="font-family: 'Cinzel', serif;"><span class="data-access">Access</span> <span class="text-amber-400 data-exclusive">Exclusive</span> <span class="data-opportunities"> Opportunities</span></h2>
+      <p class="text-gray-400 text-lg data-discover">Discover high-potential, curated Algerian startups. Transparent data, direct connection, and secure growth.</p>
+     </div>
+     <div class="grid md:grid-cols-3 gap-8 mb-12"><!-- Feature Card 1 -->
+      <div class="card-hover p-6 bg-black/60 backdrop-blur-sm border border-amber-400/20 rounded-sm">
+       <div class="flex items-center gap-4 mb-4">
+        <div class="w-12 h-12 flex items-center justify-center border border-amber-400/50 rounded-sm">
+         <svg class="w-6 h-6 text-amber-400" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /> <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+         </svg>
+        </div>
+        <h3 class="text-lg font-bold text-amber-400 data-transparency" style="font-family: 'Cinzel', serif;">Transparency</h3>
+       </div>
+       <p class="text-gray-400 text-sm data-transparency-desc">Full visibility into every project's metrics, team, and roadmap.</p>
+      </div><!-- Feature Card 2 -->
+      <div class="card-hover p-6 bg-black/60 backdrop-blur-sm border border-amber-400/20 rounded-sm">
+       <div class="flex items-center gap-4 mb-4">
+        <div class="w-12 h-12 flex items-center justify-center border border-amber-400/50 rounded-sm">
+         <svg class="w-6 h-6 text-amber-400" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z" /> <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z" />
+         </svg>
+        </div>
+        <h3 class="text-lg font-bold text-amber-400 data-direct-access" style="font-family: 'Cinzel', serif;">Direct Access</h3>
+       </div>
+       <p class="text-gray-400 text-sm data-direct-desc">Connect directly with founders. No intermediaries, no delays.</p>
+      </div><!-- Feature Card 3 -->
+      <div class="card-hover p-6 bg-black/60 backdrop-blur-sm border border-amber-400/20 rounded-sm">
+       <div class="flex items-center gap-4 mb-4">
+        <div class="w-12 h-12 flex items-center justify-center border border-amber-400/50 rounded-sm">
+         <svg class="w-6 h-6 text-amber-400" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /> <path d="M9 12l2 2 4-4" />
+         </svg>
+        </div>
+        <h3 class="text-lg font-bold text-amber-400 data-secure-growth" style="font-family: 'Cinzel', serif;">Secure Growth</h3>
+       </div>
+       <p class="text-gray-400 text-sm data-secure-desc">Vetted opportunities with risk-assessed profiles for confident investing.</p>
+      </div>
+     </div>
+     <div class="text-center"><a href="#register-investor" class="inline-block px-10 py-4 gold-gradient rounded-sm text-black font-semibold tracking-widest text-sm transition-all duration-300 pulse-glow data-explore"> EXPLORE STARTUPS </a>
+     </div>
+    </div>
+   </section><!-- Section Divider -->
+   <div class="section-divider w-full"></div><!-- Section 5: Registration Forms -->
+   <section id="register" class="py-24 px-6 bg-gradient-to-b from-black via-gray-900/30 to-black">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-16">
+      <h2 class="text-3xl md:text-5xl font-bold text-white mb-4" style="font-family: 'Cinzel', serif;"><span class="data-join">Join the</span> <span class="text-amber-400 data-gateway">Gateway</span></h2>
+      <p class="text-gray-400 text-lg data-choose">Choose your path and begin your journey with LF.</p>
+     </div>
+     <div class="grid lg:grid-cols-2 gap-12"><!-- Form 1: Entrepreneurs -->
+      <div id="register-entrepreneur" class="bg-black/80 border border-amber-400/30 rounded-sm p-8">
+       <div class="flex items-center gap-4 mb-8">
+        <div class="w-12 h-12 flex items-center justify-center gold-gradient rounded-sm">
+         <svg class="w-6 h-6 text-black" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+         </svg>
+        </div>
+        <div>
+         <h3 class="text-xl font-bold text-amber-400 data-for-owners" style="font-family: 'Cinzel', serif;">For Project Owners</h3>
+         <p class="text-gray-500 text-sm data-project-owner">صاحب المشروع أو الفكرة</p>
+        </div>
+       </div>
+       <form action="https://formspree.io/f/lfgateway2026@gmail.com" method="POST" class="space-y-5">
+        <input type="hidden" name="form_type" value="entrepreneur">
+        <div><label for="project-name" class="block text-sm text-gray-400 mb-2 data-project-label">Project Name / اسم المشروع</label> <input type="text" id="project-name" name="project_name" required class="input-field w-full px-4 py-3 rounded-sm text-white placeholder-gray-500" placeholder="Enter your project name">
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+         <div><label for="first-name" class="block text-sm text-gray-400 mb-2 data-first-label">First Name / الاسم</label> <input type="text" id="first-name" name="first_name" required class="input-field w-full px-4 py-3 rounded-sm text-white placeholder-gray-500" placeholder="First name">
+         </div>
+         <div><label for="last-name" class="block text-sm text-gray-400 mb-2 data-last-label">Last Name / اللقب</label> <input type="text" id="last-name" name="last_name" required class="input-field w-full px-4 py-3 rounded-sm text-white placeholder-gray-500" placeholder="Last name">
+         </div>
+        </div>
+        <div><label for="ent-phone" class="block text-sm text-gray-400 mb-2 data-phone-label">Phone Number / رقم الهاتف</label> <input type="tel" id="ent-phone" name="phone" required class="input-field w-full px-4 py-3 rounded-sm text-white placeholder-gray-500" placeholder="+213...">
+        </div>
+        <div><label for="ent-email" class="block text-sm text-gray-400 mb-2 data-email-label">Email / البريد الإلكتروني</label> <input type="email" id="ent-email" name="email" required class="input-field w-full px-4 py-3 rounded-sm text-white placeholder-gray-500" placeholder="your@email.com">
+        </div>
+        <div><label for="location" class="block text-sm text-gray-400 mb-2 data-location-label">Location / مكان الإقامة</label> <input type="text" id="location" name="location" required class="input-field w-full px-4 py-3 rounded-sm text-white placeholder-gray-500" placeholder="City, Country">
+        </div>
+        <div><label for="project-desc" class="block text-sm text-gray-400 mb-2 data-desc-label">Project Description / شرح مبسط للفكرة</label> <textarea id="project-desc" name="description" rows="4" required class="input-field w-full px-4 py-3 rounded-sm text-white placeholder-gray-500 resize-none" placeholder="Describe your project or idea..."></textarea>
+        </div><button type="submit" id="submit-entrepreneur" class="w-full py-4 gold-gradient rounded-sm text-black font-semibold tracking-widest text-sm transition-all duration-300 hover:shadow-lg hover:shadow-amber-400/30 disabled:opacity-50 disabled:cursor-not-allowed"> <span id="ent-btn-text" class="data-submit-project-btn">SUBMIT PROJECT</span> </button>
+       </form>
+      </div><!-- Form 2: Investors -->
+      <div id="register-investor" class="bg-black/80 border border-amber-400/30 rounded-sm p-8">
+       <div class="flex items-center gap-4 mb-8">
+        <div class="w-12 h-12 flex items-center justify-center gold-gradient rounded-sm">
+         <svg class="w-6 h-6 text-black" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" />
+         </svg>
+        </div>
+        <div>
+         <h3 class="text-xl font-bold text-amber-400 data-for-investors" style="font-family: 'Cinzel', serif;">For Investors</h3>
+         <p class="text-gray-500 text-sm data-investor-ar">المستثمر</p>
+        </div>
+       </div>
+       <form action="https://formspree.io/f/lfgateway2026@gmail.com" method="POST" class="space-y-5">
+        <input type="hidden" name="form_type" value="investor">
+        <div><label for="inv-full-name" class="block text-sm text-gray-400 mb-2 data-fullname-label">Full Name / الاسم واللقب</label> <input type="text" id="inv-full-name" name="full_name" required class="input-field w-full px-4 py-3 rounded-sm text-white placeholder-gray-500" placeholder="Enter your full name">
+        </div>
+        <div><label for="inv-contact" class="block text-sm text-gray-400 mb-2 data-contact-label">Phone or Email / رقم الهاتف أو الإيميل</label> <input type="text" id="inv-contact" name="contact" required class="input-field w-full px-4 py-3 rounded-sm text-white placeholder-gray-500" placeholder="Phone number or email address">
+        </div>
+        <div><label for="inv-interest" class="block text-sm text-gray-400 mb-2 data-interest-label">Investment Interest / النشاط المراد الاستثمار فيه</label> <textarea id="inv-interest" name="description" rows="6" required class="input-field w-full px-4 py-3 rounded-sm text-white placeholder-gray-500 resize-none" placeholder="Describe the type of activities or sectors you're interested in investing in..."></textarea>
+        </div><button type="submit" id="submit-investor" class="w-full py-4 gold-gradient rounded-sm text-black font-semibold tracking-widest text-sm transition-all duration-300 hover:shadow-lg hover:shadow-amber-400/30 disabled:opacity-50 disabled:cursor-not-allowed"> <span id="inv-btn-text" class="data-submit-interest-btn">SUBMIT INTEREST</span> </button>
+       </form>
+      </div>
+     </div>
+    </div>
+   </section><!-- Section Divider -->
+   <div class="section-divider w-full"></div><!-- Section 6: Contact -->
+   <section id="contact" class="py-24 px-6 bg-black">
+    <div class="max-w-4xl mx-auto">
+     <div class="text-center mb-16">
+      <h2 class="text-3xl md:text-5xl font-bold text-white mb-4" style="font-family: 'Cinzel', serif;"><span class="data-connect">Connect with</span> <span class="text-amber-400 data-lf">LF</span></h2>
+      <p class="text-gray-400 text-lg data-reach">We'd love to hear from you. Reach out and let's start a conversation.</p>
+     </div>
+     <div class="bg-black/50 border border-amber-400/20 rounded-sm p-8 mb-12">
+      <form action="https://formspree.io/f/xqedqvyr" method="POST" style="direction: rtl; text-align: right;">
+  
+  <label>الاسم الكامل:</label><br>
+  <input type="text" name="name" required style="width: 100%; margin-bottom: 10px;"><br>
+
+  <label>رقم الهاتف:</label><br>
+  <input type="tel" name="phone" required style="width: 100%; margin-bottom: 10px;"><br>
+
+  <label>نوع المستخدم:</label><br>
+  <select name="user_type" style="width: 100%; margin-bottom: 10px;">
+    <option value="investor">مستثمر</option>
+    <option value="entrepreneur">صاحب مشروع (مقاول)</option>
+  </select><br>
+
+  <label>تفاصيل المشروع أو ميزانية الاستثمار:</label><br>
+  <textarea name="message" required style="width: 100%; height: 100px; margin-bottom: 10px;"></textarea><br>
+
+  <input type="hidden" name="_replyto" value="lfgateway2026@gmail.com">
+
+  <button type="submit" style="background-color: #C5A059; color: black; padding: 10px 20px; border: none; cursor: pointer; font-weight: bold;">
+    إرسال الطلب
+  </button>
+</form>
+     </div><!-- Contact Info -->
+     <div class="text-center space-y-6">
+      <div class="flex flex-col md:flex-row items-center justify-center gap-6 text-gray-400 flex-wrap"><a href="mailto:lfgateway2026@gmail.com" class="flex items-center gap-2 hover:text-amber-400 transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+        </svg> lfgateway2026@gmail.com </a> <a href="https://wa.me/213549030409" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 hover:text-amber-400 transition-colors">
+        <svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+        </svg> +213 549 030 409 </a>
+      </div><!-- Social Links -->
+      <div class="flex items-center justify-center gap-6 pt-6 flex-wrap"><a href="https://www.instagram.com/lf_geteway" target="_blank" rel="noopener noreferrer" class="w-10 h-10 flex items-center justify-center border border-amber-400/50 rounded-sm text-amber-400 hover:bg-amber-400 hover:text-black transition-all duration-300">
+        <svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+        </svg></a> <a href="https://www.linkedin.com/in/lf-gateway" target="_blank" rel="noopener noreferrer" class="w-10 h-10 flex items-center justify-center border border-amber-400/50 rounded-sm text-amber-400 hover:bg-amber-400 hover:text-black transition-all duration-300">
+        <svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+        </svg></a> <a href="https://www.facebook.com/share/1ZwNQsvwin/" target="_blank" rel="noopener noreferrer" class="w-10 h-10 flex items-center justify-center border border-amber-400/50 rounded-sm text-amber-400 hover:bg-amber-400 hover:text-black transition-all duration-300">
+        <svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+        </svg></a> <a href="https://x.com/Lf_Gateway" target="_blank" rel="noopener noreferrer" class="w-10 h-10 flex items-center justify-center border border-amber-400/50 rounded-sm text-amber-400 hover:bg-amber-400 hover:text-black transition-all duration-300">
+        <svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+        </svg></a>
+      </div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="py-12 px-6 bg-black border-t border-amber-400/20">
+    <div class="max-w-4xl mx-auto text-center"><!-- Logo -->
+     <svg class="w-16 h-16 mx-auto mb-6" viewbox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="48" stroke="#D4AF37" stroke-width="1.5" opacity="0.6" /> <path d="M25 50C25 40 35 35 45 40C50 42 50 48 45 50C40 52 35 48 40 45" stroke="#D4AF37" stroke-width="2" stroke-linecap="round" /> <path d="M75 50C75 40 65 35 55 40C50 42 50 48 55 50C60 52 65 48 60 45" stroke="#D4AF37" stroke-width="2" stroke-linecap="round" /> <path d="M45 50L55 50" stroke="#D4AF37" stroke-width="2" stroke-linecap="round" /> <text x="50" y="75" text-anchor="middle" fill="#D4AF37" font-family="Cinzel" font-size="14" font-weight="600">
+       LF
+      </text>
+     </svg>
+     <p class="text-amber-400 italic text-lg mb-4 data-footer-motto" style="font-family: 'Cinzel', serif;">"Let it work. Leave it pass"</p>
+     <p class="text-gray-500 text-sm data-footer-desc">A digital bridge between vision and capital.</p>
+     <div class="mt-8 pt-8 border-t border-amber-400/10">
+      <p class="text-gray-600 text-sm data-footer-copy">© 2026 LF Gateway. All rights reserved.</p>
+     </div>
+    </div>
+   </footer>
+  </div><!-- Toast Notification -->
+  <div id="toast" class="toast"><span id="toast-message"></span>
+  </div>
+  <script>
+    // Translation object
+    const translations = {
+      en: {
+        'data-home': 'HOME',
+        'data-about': 'ABOUT',
+        'data-entrepreneurs': 'ENTREPRENEURS',
+        'data-investors': 'INVESTORS',
+        'data-register': 'REGISTER',
+        'data-contact': 'CONTACT',
+        'data-hero-bridge': ' — The Bridge Between',
+        'data-hero-vision': 'Vision',
+        'data-hero-and': ' and ',
+        'data-hero-capital': 'Capital',
+        'data-hero-motto': '"Let it work. Leave it pass"',
+        'data-laissez-faire': 'LET IT WORK',
+        'data-laissez-passer': 'LEAVE IT PASS',
+        'data-philosophy': 'The Philosophy',
+        'data-by-smith': 'By Adam Smith — The Invisible Hand of Economics',
+        'data-hist-impact': 'Historical Economic Impact',
+        'data-about-text': 'Adam Smith\'s revolutionary principle fundamentally transformed economic thinking for centuries. By advocating for minimal government intervention and allowing markets to self-regulate through the "invisible hand," Smith challenged the restrictive mercantilism of his era. His philosophy demonstrated that when entrepreneurs are free to pursue their interests and consumers are free to choose, the market naturally allocates resources efficiently. This principle laid the foundation for modern capitalism, drove unprecedented economic growth, reduced poverty, and empowered individuals to create wealth. Laissez-faire economics became the cornerstone of prosperity in free societies worldwide.',
+        'data-lf-connect': 'LF Project Philosophy',
+        'data-lf-text': 'The LF Gateway embodies Adam Smith\'s timeless wisdom by creating a digital ecosystem where innovation thrives without unnecessary barriers. We believe in giving entrepreneurs the freedom to build ("Let It Work") and enabling investors to discover opportunities seamlessly ("Let It Pass"). By removing intermediaries, cutting through red tape, and fostering direct connections, LF channels the spirit of laissez-faire economics into modern venture capital. We trust in the power of human creativity and market forces to identify and nurture the most promising ideas, creating a new era of economic opportunity for Algeria and beyond.',
+        'data-build-your': 'Build Your',
+        'data-legacy': 'Legacy',
+        'data-submit-startup': 'Submit your startup project, get vetted by experts, and get showcased to a network of premium investors.',
+        'data-ideate': 'Ideate',
+        'data-ideate-desc': 'Transform your vision into a compelling pitch that captures attention.',
+        'data-evaluate': 'Evaluate',
+        'data-evaluate-desc': 'Get vetted by industry experts who refine and validate your concept.',
+        'data-fund': 'Fund',
+        'data-fund-desc': 'Connect with investors who believe in your vision and fuel your growth.',
+        'data-submit-project': 'SUBMIT YOUR PROJECT',
+        'data-access': 'Access',
+        'data-exclusive': 'Exclusive',
+        'data-opportunities': ' Opportunities',
+        'data-discover': 'Discover high-potential, curated Algerian startups. Transparent data, direct connection, and secure growth.',
+        'data-transparency': 'Transparency',
+        'data-transparency-desc': 'Full visibility into every project\'s metrics, team, and roadmap.',
+        'data-direct-access': 'Direct Access',
+        'data-direct-desc': 'Connect directly with founders. No intermediaries, no delays.',
+        'data-secure-growth': 'Secure Growth',
+        'data-secure-desc': 'Vetted opportunities with risk-assessed profiles for confident investing.',
+        'data-explore': 'EXPLORE STARTUPS',
+        'data-join': 'Join the',
+        'data-gateway': 'Gateway',
+        'data-choose': 'Choose your path and begin your journey with LF.',
+        'data-for-owners': 'For Project Owners',
+        'data-project-owner': 'صاحب المشروع أو الفكرة',
+        'data-project-label': 'Project Name / اسم المشروع',
+        'data-first-label': 'First Name / الاسم',
+        'data-last-label': 'Last Name / اللقب',
+        'data-phone-label': 'Phone Number / رقم الهاتف',
+        'data-email-label': 'Email / البريد الإلكتروني',
+        'data-location-label': 'Location / مكان الإقامة',
+        'data-desc-label': 'Project Description / شرح مبسط للفكرة',
+        'data-submit-project-btn': 'SUBMIT PROJECT',
+        'data-for-investors': 'For Investors',
+        'data-investor-ar': 'المستثمر',
+        'data-fullname-label': 'Full Name / الاسم واللقب',
+        'data-contact-label': 'Phone or Email / رقم الهاتف أو الإيميل',
+        'data-interest-label': 'Investment Interest / النشاط المراد الاستثمار فيه',
+        'data-submit-interest-btn': 'SUBMIT INTEREST',
+        'data-connect': 'Connect with',
+        'data-lf': 'LF',
+        'data-reach': 'We\'d love to hear from you. Reach out and let\'s start a conversation.',
+        'data-contact-name-label': 'Name',
+        'data-contact-email-label': 'Email',
+        'data-role-label': 'Role',
+        'data-select-role': 'Select your role',
+        'data-opt-investor': 'Investor',
+        'data-opt-entrepreneur': 'Entrepreneur',
+        'data-opt-other': 'Other',
+        'data-message-label': 'Message',
+        'data-send-message': 'SEND MESSAGE',
+        'data-footer-motto': '"Let it work. Leave it pass"',
+        'data-footer-desc': 'A digital bridge between vision and capital.',
+        'data-footer-copy': '© 2026 LF Gateway. All rights reserved.',
+        'data-submitting': 'SUBMITTING...',
+        'data-sending': 'SENDING...',
+      },
+      ar: {
+        'data-home': 'الرئيسية',
+        'data-about': 'من نحن',
+        'data-entrepreneurs': 'رواد الأعمال',
+        'data-investors': 'المستثمرون',
+        'data-register': 'التسجيل',
+        'data-contact': 'اتصل بنا',
+        'data-hero-bridge': ' — الجسر بين',
+        'data-hero-vision': 'الرؤية',
+        'data-hero-and': ' و ',
+        'data-hero-capital': 'رأس المال',
+        'data-hero-motto': '"دعه يعمل اتركه يمر"',
+        'data-laissez-faire': 'دعه يعمل',
+        'data-laissez-passer': 'اتركه يمر',
+        'data-philosophy': 'الفلسفة',
+        'data-by-smith': 'بقلم آدم سميث — يد السوق الخفية للاقتصاد',
+        'data-hist-impact': 'التأثير الاقتصادي التاريخي',
+        'data-about-text': 'لقد حول مبدأ آدم سميث الثوري التفكير الاقتصادي لقرون. من خلال الدعوة للتدخل الحكومي الأدنى والسماح للأسواق بتنظيم نفسها من خلال "اليد الخفية"، طعّن سميث في النظام التجاري المقيد في عصره. أظهرت فلسفته أنه عندما يكون رواد الأعمال أحراراً في متابعة مصالحهم والمستهلكون أحراراً في الاختيار، يقوم السوق بتخصيص الموارد بكفاءة طبيعية. وضع هذا المبدأ الأساس للرأسمالية الحديثة وحفّز نمواً اقتصادياً غير مسبوق وقلل الفقر ومكّن الأفراد من خلق الثروة. أصبح الاقتصاد الحر حجر الزاوية للازدهار في المجتمعات الحرة في جميع أنحاء العالم.',
+        'data-lf-connect': 'فلسفة مشروع LF',
+        'data-lf-text': 'تجسد بوابة LF حكمة آدم سميث الخالدة من خلال خلق نظام رقمي حيث تزهر الابتكارات بدون حواجز غير ضرورية. نحن نؤمن بمنح رواد الأعمال حرية البناء ("دعه يعمل") وتمكين المستثمرين من اكتشاف الفرص بسلاسة ("اتركه يمر"). من خلال إزالة الوسطاء وقطع الروتين وتعزيز الاتصالات المباشرة، تنقل LF روح الاقتصاد الحر إلى رأس المال الاستثماري الحديث. نحن نثق بقوة الإبداع البشري وقوى السوق لتحديد ورعاية أفضل الأفكار، مما يخلق عصراً جديداً من الفرص الاقتصادية للجزائر وما وراءها.',
+        'data-build-your': 'بناء',
+        'data-legacy': 'إرثك',
+        'data-submit-startup': 'قدم مشروعك الناشئ واحصل على التحقق من الخبراء وعرضه على شبكة من المستثمرين المميزين.',
+        'data-ideate': 'تصور الفكرة',
+        'data-ideate-desc': 'حول رؤيتك إلى عرض تقديمي جذاب يلفت الانتباه.',
+        'data-evaluate': 'التقييم',
+        'data-evaluate-desc': 'احصل على التحقق من خبراء الصناعة الذين يحسنون ويتحققون من مفهومك.',
+        'data-fund': 'التمويل',
+        'data-fund-desc': 'تواصل مع المستثمرين الذين يؤمنون برؤيتك ويوقدون نموك.',
+        'data-submit-project': 'قدم مشروعك',
+        'data-access': 'الوصول إلى',
+        'data-exclusive': 'فرص حصرية',
+        'data-opportunities': '',
+        'data-discover': 'اكتشف الشركات الناشئة الجزائرية عالية الإمكانات. بيانات شفافة واتصال مباشر ونمو آمن.',
+        'data-transparency': 'الشفافية',
+        'data-transparency-desc': 'الرؤية الكاملة لجميع مقاييس المشروع والفريق والخارطة الطريقية.',
+        'data-direct-access': 'الوصول المباشر',
+        'data-direct-desc': 'تواصل مباشر مع المؤسسين. بدون وسطاء بدون تأخير.',
+        'data-secure-growth': 'النمو الآمن',
+        'data-secure-desc': 'فرص التحقق منها مع ملفات تعريف محيطة بالمخاطر للاستثمار الواثق.',
+        'data-explore': 'اكتشف الشركات الناشئة',
+        'data-join': 'انضم إلى',
+        'data-gateway': 'البوابة',
+        'data-choose': 'اختر مسارك وابدأ رحلتك مع LF',
+        'data-for-owners': 'لأصحاب المشاريع',
+        'data-project-owner': 'صاحب المشروع أو الفكرة',
+        'data-project-label': 'اسم المشروع',
+        'data-first-label': 'الاسم الأول',
+        'data-last-label': 'الاسم الأخير',
+        'data-phone-label': 'رقم الهاتف',
+        'data-email-label': 'البريد الإلكتروني',
+        'data-location-label': 'مكان الإقامة',
+        'data-desc-label': 'وصف المشروع',
+        'data-submit-project-btn': 'قدم المشروع',
+        'data-for-investors': 'للمستثمرين',
+        'data-investor-ar': 'المستثمر',
+        'data-fullname-label': 'الاسم الكامل',
+        'data-contact-label': 'رقم الهاتف أو البريد',
+        'data-interest-label': 'اهتمام الاستثمار',
+        'data-submit-interest-btn': 'قدم الاهتمام',
+        'data-connect': 'تواصل مع',
+        'data-lf': 'LF',
+        'data-reach': 'نحب أن نسمع منك. تواصل معنا ودعنا نبدأ محادثة.',
+        'data-contact-name-label': 'الاسم',
+        'data-contact-email-label': 'البريد الإلكتروني',
+        'data-role-label': 'الدور',
+        'data-select-role': 'اختر دورك',
+        'data-opt-investor': 'مستثمر',
+        'data-opt-entrepreneur': 'رائد أعمال',
+        'data-opt-other': 'أخرى',
+        'data-message-label': 'الرسالة',
+        'data-send-message': 'إرسال الرسالة',
+        'data-footer-motto': '"دعه يعمل اتركه يمر"',
+        'data-footer-desc': 'جسر رقمي بين الرؤية ورأس المال.',
+        'data-footer-copy': '© 2026 بوابة LF. جميع الحقوق محفوظة.',
+        'data-submitting': 'جاري الإرسال...',
+        'data-sending': 'جاري الإرسال...',
+      },
+      fr: {
+        'data-home': 'ACCUEIL',
+        'data-about': 'À PROPOS',
+        'data-entrepreneurs': 'ENTREPRENEURS',
+        'data-investors': 'INVESTISSEURS',
+        'data-register': 'S\'INSCRIRE',
+        'data-contact': 'CONTACT',
+        'data-hero-bridge': ' — Le Pont Entre',
+        'data-hero-vision': 'la Vision',
+        'data-hero-and': ' et ',
+        'data-hero-capital': 'le Capital',
+        'data-hero-motto': '"Laissez faire. Laissez passer"',
+        'data-laissez-faire': 'LAISSEZ FAIRE',
+        'data-laissez-passer': 'LAISSEZ PASSER',
+        'data-philosophy': 'La Philosophie',
+        'data-by-smith': 'Par Adam Smith — La Main Invisible de l\'Économie',
+        'data-hist-impact': 'Impact Économique Historique',
+        'data-about-text': 'Le principe révolutionnaire d\'Adam Smith a fondamentalement transformé la pensée économique pendant des siècles. En prônant une intervention gouvernementale minimale et en permettant aux marchés de s\'auto-réguler par la "main invisible", Smith a remis en question le mercantilisme restrictif de son époque. Sa philosophie a démontré que lorsque les entrepreneurs sont libres de poursuivre leurs intérêts et que les consommateurs sont libres de choisir, le marché alloue naturellement les ressources efficacement. Ce principe a jeté les bases du capitalisme moderne, a stimulé une croissance économique sans précédent, a réduit la pauvreté et a autonomisé les individus à créer de la richesse. L\'économie de marché libre est devenue la pierre angulaire de la prospérité dans les sociétés libres du monde entier.',
+        'data-lf-connect': 'Philosophie du Projet LF',
+        'data-lf-text': 'La Passerelle LF incarne la sagesse intemporelle d\'Adam Smith en créant un écosystème numérique où l\'innovation prospère sans obstacles inutiles. Nous croyons à accorder aux entrepreneurs la liberté de construire ("Laissez faire") et permettre aux investisseurs de découvrir les opportunités de manière transparente ("Laissez passer"). En supprimant les intermédiaires, en coupant les bureaucraties et en favorisant les connexions directes, LF canalise l\'esprit de l\'économie de marché libre dans le capital-risque moderne. Nous avons confiance en la puissance de la créativité humaine et des forces du marché pour identifier et cultiver les idées les plus prometteuses, créant une nouvelle ère d\'opportunités économiques pour l\'Algérie et au-delà.',
+        'data-build-your': 'Construisez Votre',
+        'data-legacy': 'Héritage',
+        'data-submit-startup': 'Soumettez votre projet de démarrage, faites-le valider par des experts et présentez-le à un réseau d\'investisseurs premium.',
+        'data-ideate': 'Imaginez',
+        'data-ideate-desc': 'Transformez votre vision en un pitch convaincant qui capture l\'attention.',
+        'data-evaluate': 'Évaluer',
+        'data-evaluate-desc': 'Obtenez la validation d\'experts du secteur qui affinent et valident votre concept.',
+        'data-fund': 'Financer',
+        'data-fund-desc': 'Connectez-vous avec des investisseurs qui croient en votre vision et alimentent votre croissance.',
+        'data-submit-project': 'SOUMETTRE VOTRE PROJET',
+        'data-access': 'Accès aux',
+        'data-exclusive': 'Opportunités Exclusives',
+        'data-opportunities': '',
+        'data-discover': 'Découvrez les startups algériennes à haut potentiel. Données transparentes, connexion directe et croissance sécurisée.',
+        'data-transparency': 'Transparence',
+        'data-transparency-desc': 'Visibilité complète sur toutes les métriques, l\'équipe et la feuille de route du projet.',
+        'data-direct-access': 'Accès Direct',
+        'data-direct-desc': 'Connectez-vous directement avec les fondateurs. Sans intermédiaires, sans délais.',
+        'data-secure-growth': 'Croissance Sécurisée',
+        'data-secure-desc': 'Opportunités validées avec des profils évalués pour un investissement en confiance.',
+        'data-explore': 'EXPLORER LES STARTUPS',
+        'data-join': 'Rejoignez la',
+        'data-gateway': 'Passerelle',
+        'data-choose': 'Choisissez votre chemin et commencez votre voyage avec LF.',
+        'data-for-owners': 'Pour les Propriétaires de Projets',
+        'data-project-owner': 'Propriétaire du Projet ou de l\'Idée',
+        'data-project-label': 'Nom du Projet',
+        'data-first-label': 'Prénom',
+        'data-last-label': 'Nom de Famille',
+        'data-phone-label': 'Numéro de Téléphone',
+        'data-email-label': 'E-mail',
+        'data-location-label': 'Lieu de Résidence',
+        'data-desc-label': 'Description du Projet',
+        'data-submit-project-btn': 'SOUMETTRE LE PROJET',
+        'data-for-investors': 'Pour les Investisseurs',
+        'data-investor-ar': 'المستثمر',
+        'data-fullname-label': 'Nom Complet',
+        'data-contact-label': 'Téléphone ou E-mail',
+        'data-interest-label': 'Intérêt d\'Investissement',
+        'data-submit-interest-btn': 'SOUMETTRE L\'INTÉRÊT',
+        'data-connect': 'Connectez-vous avec',
+        'data-lf': 'LF',
+        'data-reach': 'Nous aimerions vous entendre. Contactez-nous et commençons une conversation.',
+        'data-contact-name-label': 'Nom',
+        'data-contact-email-label': 'E-mail',
+        'data-role-label': 'Rôle',
+        'data-select-role': 'Sélectionnez votre rôle',
+        'data-opt-investor': 'Investisseur',
+        'data-opt-entrepreneur': 'Entrepreneur',
+        'data-opt-other': 'Autre',
+        'data-message-label': 'Message',
+        'data-send-message': 'ENVOYER LE MESSAGE',
+        'data-footer-motto': '"Laissez faire. Laissez passer"',
+        'data-footer-desc': 'Un pont numérique entre la vision et le capital.',
+        'data-footer-copy': '© 2026 Passerelle LF. Tous droits réservés.',
+        'data-submitting': 'ENVOI EN COURS...',
+        'data-sending': 'ENVOI EN COURS...',
+      }
+    };
+
+    let currentLanguage = localStorage.getItem('language') || 'en';
+
+    // Change language function
+    function changeLanguage(lang) {
+      currentLanguage = lang;
+      localStorage.setItem('language', lang);
+      document.documentElement.lang = lang;
+      
+      if (lang === 'ar') {
+        document.documentElement.setAttribute('dir', 'rtl');
+      } else {
+        document.documentElement.removeAttribute('dir');
+      }
+
+      // Update all elements with data attributes
+      Object.keys(translations[lang]).forEach(key => {
+        const elements = document.querySelectorAll(`.${key}`);
+        elements.forEach(el => {
+          el.textContent = translations[lang][key];
+        });
+      });
+
+      // Update select options
+      updateSelectOptions();
+
+      // Update language button styles
+      document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+      document.getElementById(`lang-${lang}`)?.classList.add('active');
+      document.getElementById(`lang-${lang}-mobile`)?.classList.add('active');
+    }
+
+    function updateSelectOptions() {
+      const selectRole = document.getElementById('contact-role');
+      if (!selectRole) return;
+      const options = selectRole.querySelectorAll('option');
+      options.forEach((opt, idx) => {
+        if (idx === 0) opt.textContent = translations[currentLanguage]['data-select-role'];
+        else if (idx === 1) opt.textContent = translations[currentLanguage]['data-opt-investor'];
+        else if (idx === 2) opt.textContent = translations[currentLanguage]['data-opt-entrepreneur'];
+        else if (idx === 3) opt.textContent = translations[currentLanguage]['data-opt-other'];
+      });
+    }
+
+    // Toast notification
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('toast');
+      const toastMessage = document.getElementById('toast-message');
+      toast.className = `toast toast-${type}`;
+      toastMessage.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 4000);
+    }
+
+    // Formspree handles form submission automatically - no handlers needed
+
+    // Navigation scroll effect
+    function handleScroll() {
+      const navbar = document.getElementById('navbar');
+      const scrollY = window.scrollY || document.documentElement.scrollTop;
+      
+      if (scrollY > 100) {
+        navbar.classList.add('bg-black/95', 'backdrop-blur-md');
+        navbar.classList.remove('bg-transparent');
+      } else {
+        navbar.classList.remove('bg-black/95', 'backdrop-blur-md');
+        navbar.classList.add('bg-transparent');
+      }
+    }
+
+    // Mobile menu toggle
+    function toggleMobileMenu() {
+      const mobileMenu = document.getElementById('mobile-menu');
+      mobileMenu.classList.toggle('hidden');
+    }
+
+    // Smooth scroll for navigation links
+    function setupSmoothScroll() {
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            document.getElementById('mobile-menu').classList.add('hidden');
+          }
+        });
+      });
+    }
+
+    // Intersection Observer for fade-in animations
+    function setupScrollAnimations() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+          }
+        });
+      }, { threshold: 0.1 });
+
+      document.querySelectorAll('.fade-in-up').forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(30px)';
+        el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+        observer.observe(el);
+      });
+    }
+
+    // Initialize language
+    function initializeLanguage() {
+      changeLanguage(currentLanguage);
+    }
+
+    // Initialize
+    function init() {
+      document.getElementById('mobile-menu-btn').addEventListener('click', toggleMobileMenu);
+      document.getElementById('app-wrapper').addEventListener('scroll', handleScroll);
+      
+      setupSmoothScroll();
+      setupScrollAnimations();
+      initializeLanguage();
+
+      setTimeout(() => {
+        document.querySelectorAll('.fade-in-up').forEach((el, index) => {
+          setTimeout(() => {
+            el.style.opacity = '1';
+            el.style.transform = 'translateY(0)';
+          }, index * 100);
+        });
+      }, 100);
+    }
+
+    // Initialize on page load
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  </script>
+ </body>
+</html>
