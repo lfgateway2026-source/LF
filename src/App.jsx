@@ -5,7 +5,12 @@ function ContactForm() {
   const [state, handleSubmit] = useForm("xqedqvyr");
 
   if (state.succeeded) {
-      return <p style={{color: '#D4AF37', textAlign: 'center', padding: '20px'}}>تم استلام بياناتك بنجاح في منصة LF Gateway.</p>;
+      return (
+        <div style={{ textAlign: 'center', padding: '30px', color: '#D4AF37' }}>
+          <h2>✅ تم الإرسال بنجاح</h2>
+          <p>شكراً لاهتمامكم بمنصة LF Gateway.</p>
+        </div>
+      );
   }
 
   return (
@@ -18,13 +23,10 @@ function ContactForm() {
         <label style={{ color: '#fff' }}>رقم الهاتف أو البريد</label>
         <input type="text" name="contact" required style={{ padding: '10px', backgroundColor: '#111', color: '#fff', border: '1px solid #333' }} />
 
-        {/* هذه هي اللافتة البسيطة التي طلبتها */}
-        <div style={{ backgroundColor: '#1a1a1a', border: '1px solid #D4AF37', padding: '15px', color: '#fff', fontSize: '0.9rem', borderRadius: '5px' }}>
-          <strong style={{ color: '#D4AF37' }}>📋 ملاحظة هامة جدا:</strong>
-          <p style={{ margin: '5px 0 0 0' }}>
-            بإرسال هذه البيانات، أقر بصحة المعلومات المقدمة وأوافق على معالجتها من قبل منصة LF Gateway لأغراض الاستثمار والتواصل الرسمي.
-          </p>
-        </div>
+        {/* السطر الذهبي الذي كان أخضر في صورتك */}
+        <p style={{ color: '#D4AF37', fontSize: '0.9rem', textAlign: 'right', margin: '10px 0' }}>
+          بإرسال هذه البيانات، أقر بصحة المعلومات المقدمة وأوافق على معالجتها من قبل منصة LF Gateway.
+        </p>
 
         <button 
           type="submit" 
