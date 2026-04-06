@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useForm, ValidationError } from '@formspree/react';
-import LegalConsent from './LegalConsent'; // لاحظ حرف L كبير هنا
+import LegalConsent from './FinalTerms'; // لاحظ حرف L كبير هنا
 
 function ContactForm() {
   const [state, handleSubmit] = useForm("xqedqvyr");
