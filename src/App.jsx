@@ -1,64 +1,45 @@
-// Make sure to run npm install @formspree/react
-// For more help visit https://formspr.ee/react-help
 import React, { useState } from 'react';
 import { useForm, ValidationError } from '@formspree/react';
-import LegalConsent from './legalConsent';
+import LegalConsent from './legalConsent'; // تأكد أن الملف في نفس المجلد
 
 function ContactForm() {
   const [state, handleSubmit] = useForm("xqedqvyr");
   const [isConsentChecked, setIsConsentChecked] = useState(false);
 
   if (state.succeeded) {
-      return <p>Thanks for joining!</p>;
+      return <p style={{color: '#D4AF37', textAlign: 'center', padding: '20px', backgroundColor: '#111', borderRadius: '10px'}}>شكراً لثقتك! تم استلام بياناتك بنجاح في منصة LF Gateway.</p>;
   }
 
-  const handleAcceptConsent = (isAccepted) => {
-    setIsConsentChecked(isAccepted);
-  };
-
   return (
-    <form onSubmit={handleSubmit} encType="multipart/form-data">
-      <label htmlFor="email">
-        Your email:
-      </label>
-      <input
-        id="email"
-        type="email" 
-        name="email"
-      />
-      <ValidationError 
-        prefix="Email" 
-        field="email"
-        errors={state.errors}
-      />
-      <label htmlFor="upload">
-        Your file:
-      </label>
-      <input
-        id="upload"
-        type="file"
-        name="upload"
-      />
-      <ValidationError 
-        prefix="File" 
-        field="upload"
-        errors={state.errors}
-      />
-      <LegalConsent onAccept={handleAcceptConsent} />
-      <button 
-        type="submit" 
-        disabled={state.submitting || !isConsentChecked}
-      >
-        Send
-      </button>
-    </form>
+      <form onSubmit={handleSubmit} encType="multipart/form-data" style={{display: 'flex', flexDirection: 'column', gap: '15px', maxWidth: '500px', margin: '0 auto'}}>
+        
+        <label htmlFor="email" style={{color: '#fff', textAlign: 'right'}}>البريد الإلكتروني:</label>
+        <input id="email" type="email" name="email" required style={{padding: '12px', borderRadius: '5px', border: '1px solid #333', backgroundColor: '#222', color: '#fff'}} />
+        <ValidationError prefix="Email" field="email" errors={state.errors} />
+
+        {/* المربع القانوني الذهبي والأسود */}
+        <LegalConsent onAccept={(isAccepted) => setIsConsentChecked(isAccepted)} />
+
+        {/* زر الإرسال - مربوط بالموافقة */}
+        <button 
+          type="submit" 
+          disabled={state.submitting || !isConsentChecked}
+          style={{
+            backgroundColor: isConsentChecked ? '#D4AF37' : '#444',
+            color: '#000',
+            padding: '14px',
+            fontWeight: 'bold',
+            cursor: isConsentChecked ? 'pointer' : 'not-allowed',
+            border: 'none',
+            borderRadius: '5px',
+            fontSize: '1rem',
+            transition: '0.3s'
+          }}
+        >
+          {state.submitting ? 'جاري الإرسال...' : 'إرسال البيانات للمستثمرين'}
+        </button>
+      </form>
   );
 }
 
-function App() {
-  return (
-    <ContactForm />
-  );
-}
-
-export default App;
+export default ContactForm;
