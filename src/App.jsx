@@ -1,13 +1,39 @@
 // Make sure to run npm install @formspree/react
 // For more help visit https://formspr.ee/react-help
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm, ValidationError } from '@formspree/react';
+
+function LegalConsent({ isChecked, onChange }) {
+  return (
+    <div className="legal-consent">
+      <label htmlFor="legal-consent" className="consent-label">
+        <input
+          id="legal-consent"
+          type="checkbox"
+          checked={isChecked}
+          onChange={onChange}
+          name="legal_consent"
+        />
+        <span>
+          I agree to the terms and conditions and consent to the processing of my data.
+        </span>
+      </label>
+    </div>
+  );
+}
 
 function ContactForm() {
   const [state, handleSubmit] = useForm("xqedqvyr");
+  const [isConsentChecked, setIsConsentChecked] = useState(false);
+
   if (state.succeeded) {
       return <p>Thanks for joining!</p>;
   }
+
+  const handleConsentChange = (e) => {
+    setIsConsentChecked(e.target.checked);
+  };
+
   return (
     <form onSubmit={handleSubmit} encType="multipart/form-data">
       <label htmlFor="email">
@@ -36,7 +62,14 @@ function ContactForm() {
         field="upload"
         errors={state.errors}
       />
-      <button type="submit" disabled={state.submitting}>
+      <LegalConsent 
+        isChecked={isConsentChecked} 
+        onChange={handleConsentChange}
+      />
+      <button 
+        type="submit" 
+        disabled={state.submitting || !isConsentChecked}
+      >
         Send
       </button>
     </form>
