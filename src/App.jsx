@@ -20,7 +20,7 @@ function ContactForm() {
 
         {/* هذه هي اللافتة البسيطة التي طلبتها */}
         <div style={{ backgroundColor: '#1a1a1a', border: '1px solid #D4AF37', padding: '15px', color: '#fff', fontSize: '0.9rem', borderRadius: '5px' }}>
-          <strong style={{ color: '#D4AF37' }}>📋 تنبيه قانوني:</strong>
+          <strong style={{ color: '#D4AF37' }}>📋 ملاحظة هامة جدا:</strong>
           <p style={{ margin: '5px 0 0 0' }}>
             بإرسال هذه البيانات، أقر بصحة المعلومات المقدمة وأوافق على معالجتها من قبل منصة LF Gateway لأغراض الاستثمار والتواصل الرسمي.
           </p>
