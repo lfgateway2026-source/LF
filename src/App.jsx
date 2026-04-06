@@ -1,18 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useForm, ValidationError } from '@formspree/react';
-import LegalConsent from './FinalTerms'; // لاحظ حرف L كبير هنا
 
 function ContactForm() {
   const [state, handleSubmit] = useForm("xqedqvyr");
-  const [isConsentChecked, setIsConsentChecked] = useState(false);
 
   if (state.succeeded) {
-      return (
-        <div style={{ textAlign: 'center', padding: '30px', color: '#D4AF37' }}>
-          <h2>✅ تم الإرسال بنجاح</h2>
-          <p>شكراً لاهتمامكم بمنصة LF Gateway.</p>
-        </div>
-      );
+      return <p style={{color: '#D4AF37', textAlign: 'center', padding: '20px'}}>تم استلام بياناتك بنجاح في منصة LF Gateway.</p>;
   }
 
   return (
@@ -25,21 +18,18 @@ function ContactForm() {
         <label style={{ color: '#fff' }}>رقم الهاتف أو البريد</label>
         <input type="text" name="contact" required style={{ padding: '10px', backgroundColor: '#111', color: '#fff', border: '1px solid #333' }} />
 
-        {/* المربع القانوني الذهبي والأسود */}
-        <LegalConsent onAccept={(val) => setIsConsentChecked(val)} />
+        {/* هذه هي اللافتة البسيطة التي طلبتها */}
+        <div style={{ backgroundColor: '#1a1a1a', border: '1px solid #D4AF37', padding: '15px', color: '#fff', fontSize: '0.9rem', borderRadius: '5px' }}>
+          <strong style={{ color: '#D4AF37' }}>📋 تنبيه قانوني:</strong>
+          <p style={{ margin: '5px 0 0 0' }}>
+            بإرسال هذه البيانات، أقر بصحة المعلومات المقدمة وأوافق على معالجتها من قبل منصة LF Gateway لأغراض الاستثمار والتواصل الرسمي.
+          </p>
+        </div>
 
         <button 
           type="submit" 
-          disabled={state.submitting || !isConsentChecked}
-          style={{
-            backgroundColor: isConsentChecked ? '#D4AF37' : '#444',
-            color: '#000',
-            padding: '15px',
-            fontWeight: 'bold',
-            cursor: isConsentChecked ? 'pointer' : 'not-allowed',
-            border: 'none',
-            borderRadius: '5px'
-          }}
+          disabled={state.submitting}
+          style={{ backgroundColor: '#D4AF37', color: '#000', padding: '15px', fontWeight: 'bold', border: 'none', cursor: 'pointer' }}
         >
           {state.submitting ? 'جاري الإرسال...' : 'قدم الاهتمام'}
         </button>
