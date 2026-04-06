@@ -1,44 +1,50 @@
 import React, { useState } from 'react';
 import { useForm, ValidationError } from '@formspree/react';
-import LegalConsent from './legalConsent'; // تأكد أن الملف في نفس المجلد
+import LegalConsent from './LegalConsent'; // لاحظ حرف L كبير هنا
 
 function ContactForm() {
   const [state, handleSubmit] = useForm("xqedqvyr");
   const [isConsentChecked, setIsConsentChecked] = useState(false);
 
   if (state.succeeded) {
-      return <p style={{color: '#D4AF37', textAlign: 'center', padding: '20px', backgroundColor: '#111', borderRadius: '10px'}}>شكراً لثقتك! تم استلام بياناتك بنجاح في منصة LF Gateway.</p>;
+      return (
+        <div style={{ textAlign: 'center', padding: '30px', color: '#D4AF37' }}>
+          <h2>✅ تم الإرسال بنجاح</h2>
+          <p>شكراً لاهتمامكم بمنصة LF Gateway.</p>
+        </div>
+      );
   }
 
   return (
-      <form onSubmit={handleSubmit} encType="multipart/form-data" style={{display: 'flex', flexDirection: 'column', gap: '15px', maxWidth: '500px', margin: '0 auto'}}>
+    <div style={{ direction: 'rtl', padding: '20px' }}>
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
         
-        <label htmlFor="email" style={{color: '#fff', textAlign: 'right'}}>البريد الإلكتروني:</label>
-        <input id="email" type="email" name="email" required style={{padding: '12px', borderRadius: '5px', border: '1px solid #333', backgroundColor: '#222', color: '#fff'}} />
-        <ValidationError prefix="Email" field="email" errors={state.errors} />
+        <label style={{ color: '#fff' }}>الاسم الكامل</label>
+        <input type="text" name="name" required style={{ padding: '10px', backgroundColor: '#111', color: '#fff', border: '1px solid #333' }} />
+
+        <label style={{ color: '#fff' }}>رقم الهاتف أو البريد</label>
+        <input type="text" name="contact" required style={{ padding: '10px', backgroundColor: '#111', color: '#fff', border: '1px solid #333' }} />
 
         {/* المربع القانوني الذهبي والأسود */}
-        <LegalConsent onAccept={(isAccepted) => setIsConsentChecked(isAccepted)} />
+        <LegalConsent onAccept={(val) => setIsConsentChecked(val)} />
 
-        {/* زر الإرسال - مربوط بالموافقة */}
         <button 
           type="submit" 
           disabled={state.submitting || !isConsentChecked}
           style={{
             backgroundColor: isConsentChecked ? '#D4AF37' : '#444',
             color: '#000',
-            padding: '14px',
+            padding: '15px',
             fontWeight: 'bold',
             cursor: isConsentChecked ? 'pointer' : 'not-allowed',
             border: 'none',
-            borderRadius: '5px',
-            fontSize: '1rem',
-            transition: '0.3s'
+            borderRadius: '5px'
           }}
         >
-          {state.submitting ? 'جاري الإرسال...' : 'إرسال البيانات للمستثمرين'}
+          {state.submitting ? 'جاري الإرسال...' : 'قدم الاهتمام'}
         </button>
       </form>
+    </div>
   );
 }
 
