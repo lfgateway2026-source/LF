@@ -338,7 +338,7 @@
       <h2 class="text-3xl md:text-5xl font-bold text-white mb-4" style="font-family: 'Cinzel', serif;"><span class="data-connect">Connect with</span> <span class="text-amber-400 data-lf">LF</span></h2>
       <p class="text-gray-400 text-lg data-reach">We'd love to hear from you. Reach out and let's start a conversation.</p>
      </div>
-     <div class="bg-black/50 border border-amber-400/20 rounded-sm p-8 mb-12">
+     <div id="contact-form-container" class="bg-black/50 border border-amber-400/20 rounded-sm p-8 mb-12">
       <form id="contact-form" action="https://formspree.io/f/xqedqvyr" method="POST" style="direction: rtl; text-align: right;" novalidate>
 
   <label>الاسم الكامل:</label><br>
@@ -363,17 +363,17 @@
   </button>
 </form>
 
-      <!-- Success card (hidden by default) -->
-      <div id="contact-success" class="hidden mt-6 max-w-2xl mx-auto">
-        <div class="bg-black border border-amber-400 rounded-lg p-6 shadow-xl">
+      <!-- Success card (hidden by default, will be revealed smoothly) -->
+      <div id="contact-success" class="mt-6 max-w-2xl mx-auto" style="display:none; opacity:0; transform:translateY(8px); transition:opacity 420ms ease, transform 420ms ease;">
+        <div class="rounded-lg p-6 shadow-xl" style="background:#000; border:2px solid #cca152;">
           <div class="flex items-start gap-4">
-            <div class="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center gold-border pulse-glow" style="border:2px solid #D4AF37;">
-              <svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+            <div class="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center" style="background:rgba(204,161,82,0.06); border-radius:9999px;">
+              <svg class="w-6 h-6" fill="none" stroke="#cca152" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
             </div>
             <div>
-              <h3 class="text-xl font-semibold text-amber-300 mb-2" style="font-family: 'Cinzel', serif;">تم الاستلام — شكراً لك</h3>
-              <p class="text-gray-300 mb-4">شكراً لتواصلك معنا. تم إرسال طلبك بنجاح وسيتواصل معك فريقنا قريباً.</p>
-              <button id="contact-success-close" class="bg-transparent border border-amber-400 text-amber-300 px-4 py-2 rounded hover:bg-amber-400/10">أغلق</button>
+              <h3 class="text-xl font-semibold mb-2" style="font-family: 'Cinzel', serif; color:#cca152;">✓ Succès !</h3>
+              <p class="text-gray-300 mb-4">Vos données ont été envoyées avec succès. L'équipe LF Gateway vous contactera sous peu.</p>
+              <button id="contact-success-close" class="bg-transparent" style="color:#cca152; border:1px solid rgba(204,161,82,0.25); padding:8px 12px; border-radius:6px;">Fermer</button>
             </div>
           </div>
         </div>
@@ -802,7 +802,7 @@
         e.preventDefault();
         submitBtn.disabled = true;
         const originalText = submitBtn.textContent;
-        submitBtn.textContent = translations[currentLanguage]?.['data-sending'] || 'SENDING...';
+        submitBtn.textContent = 'Envoi en cours...';
 
         try {
           const res = await fetch(contactForm.action, {
@@ -812,12 +812,18 @@
           });
 
           if (res.ok) {
-            contactForm.style.display = 'none';
-            successCard.classList.remove('hidden');
-            showToast(translations[currentLanguage]?.['data-submitting'] || 'SUBMITTED', 'success');
+            // hide the form container and reveal the success card with a smooth transition
+            const container = document.getElementById('contact-form-container');
+            if (container) container.style.display = 'none';
+            successCard.style.display = 'block';
+            requestAnimationFrame(() => {
+              successCard.style.opacity = '1';
+              successCard.style.transform = 'translateY(0)';
+            });
+            showToast('Vos données ont été envoyées', 'success');
           } else {
             const data = await res.json().catch(() => null);
-            const msg = (data && data.error) ? data.error : 'Error sending message';
+            const msg = (data && data.error) ? data.error : 'Erreur lors de l\'envoi';
             showToast(msg, 'error');
           }
         } catch (err) {
@@ -830,9 +836,15 @@
 
       const closeBtn = document.getElementById('contact-success-close');
       closeBtn?.addEventListener('click', () => {
-        successCard.classList.add('hidden');
+        // hide success card and reset form container
+        successCard.style.opacity = '0';
+        successCard.style.transform = 'translateY(8px)';
+        setTimeout(() => {
+          successCard.style.display = 'none';
+        }, 420);
+        const container = document.getElementById('contact-form-container');
+        if (container) container.style.display = 'block';
         contactForm.reset();
-        contactForm.style.display = 'block';
         contactForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
     })();
