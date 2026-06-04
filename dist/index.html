@@ -121,7 +121,7 @@
        </svg></button> <!-- Left Navigation -->
       <div class="hidden lg:flex items-center gap-16"><a href="#home" class="nav-link text-sm tracking-widest text-gray-300 hover:text-amber-400 transition-colors data-home">HOME</a> <a href="#about" class="nav-link text-sm tracking-widest text-gray-300 hover:text-amber-400 transition-colors data-about">ABOUT</a> <a href="#entrepreneurs" class="nav-link text-sm tracking-widest text-gray-300 hover:text-amber-400 transition-colors data-entrepreneurs">ENTREPRENEURS</a>
       </div><!-- Center Logo --> <a href="#home" class="flex items-center space-x-2">
-       <img src="logo_new.png" alt="LF Gateway Logo" class="w-12 h-12">
+       <img src="/assets/logo_new-BOPnoPgr.png" alt="LF Gateway Logo" class="w-12 h-12">
       </a> <!-- Right Navigation with Language Selector -->
       <div class="hidden lg:flex items-center gap-8">
        <div class="flex items-center gap-16"><a href="#investors" class="nav-link text-sm tracking-widest text-gray-300 hover:text-amber-400 transition-colors data-investors">INVESTORS</a> <a href="#register" class="nav-link text-sm tracking-widest text-gray-300 hover:text-amber-400 transition-colors data-register">REGISTER</a> <a href="#contact" class="nav-link text-sm tracking-widest text-gray-300 hover:text-amber-400 transition-colors data-contact">CONTACT</a>
@@ -152,7 +152,7 @@
     </div>
     <div class="relative z-10 text-center px-6 max-w-5xl mx-auto"><!-- Animated Logo -->
      <div class="mb-8 fade-in-up opacity-0">
-      <img src="logo_new.png" alt="LF Gateway Logo" class="w-32 h-32 mx-auto float-animation">
+      <img src="/assets/logo_new-BOPnoPgr.png" alt="LF Gateway Logo" class="w-32 h-32 mx-auto float-animation">
      </div>
      <h1 id="hero-headline" class="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 fade-in-up opacity-0 delay-100" style="font-family: 'Cinzel', serif;"><span class="shimmer-text">LF</span> <span class="text-white data-hero-bridge"> — The Bridge Between</span> <br><span class="text-amber-400 data-hero-vision">Vision</span> <span class="text-white data-hero-and"> and </span> <span class="text-amber-400 data-hero-capital">Capital</span></h1>
      <p id="hero-subheadline" class="text-lg md:text-xl text-gray-400 mb-12 max-w-3xl mx-auto fade-in-up opacity-0 delay-200" style="font-family: 'Montserrat', sans-serif; font-style: italic;"><span class="data-hero-motto">"Let it work. Let it pass"</span></p>
@@ -339,45 +339,29 @@
       <p class="text-gray-400 text-lg data-reach">We'd love to hear from you. Reach out and let's start a conversation.</p>
      </div>
      <div class="bg-black/50 border border-amber-400/20 rounded-sm p-8 mb-12">
-      <form id="contact-form" action="https://formspree.io/f/xqedqvyr" method="POST" style="direction: rtl; text-align: right;" novalidate>
-
+      <form action="https://formspree.io/f/xqedqvyr" method="POST" style="direction: rtl; text-align: right;">
+  
   <label>الاسم الكامل:</label><br>
-  <input id="contact-name" type="text" name="name" required style="width: 100%; margin-bottom: 10px;"><br>
+  <input type="text" name="name" required style="width: 100%; margin-bottom: 10px;"><br>
 
   <label>رقم الهاتف:</label><br>
-  <input id="contact-phone" type="tel" name="phone" required style="width: 100%; margin-bottom: 10px;"><br>
+  <input type="tel" name="phone" required style="width: 100%; margin-bottom: 10px;"><br>
 
   <label>نوع المستخدم:</label><br>
-  <select id="contact-user_type" name="user_type" style="width: 100%; margin-bottom: 10px;">
+  <select name="user_type" style="width: 100%; margin-bottom: 10px;">
     <option value="investor">مستثمر</option>
     <option value="entrepreneur">صاحب مشروع (مقاول)</option>
   </select><br>
 
   <label>تفاصيل المشروع أو ميزانية الاستثمار:</label><br>
-  <textarea id="contact-message" name="message" required style="width: 100%; height: 100px; margin-bottom: 10px;"></textarea><br>
+  <textarea name="message" required style="width: 100%; height: 100px; margin-bottom: 10px;"></textarea><br>
 
   <input type="hidden" name="_replyto" value="lfgateway2026@gmail.com">
 
-  <button id="contact-submit" type="submit" style="background-color: #C5A059; color: black; padding: 10px 20px; border: none; cursor: pointer; font-weight: bold;">
+  <button type="submit" style="background-color: #C5A059; color: black; padding: 10px 20px; border: none; cursor: pointer; font-weight: bold;">
     إرسال الطلب
   </button>
 </form>
-
-      <!-- Success card (hidden by default) -->
-      <div id="contact-success" class="hidden mt-6 max-w-2xl mx-auto">
-        <div class="bg-black border border-amber-400 rounded-lg p-6 shadow-xl">
-          <div class="flex items-start gap-4">
-            <div class="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center gold-border pulse-glow" style="border:2px solid #D4AF37;">
-              <svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
-            </div>
-            <div>
-              <h3 class="text-xl font-semibold text-amber-300 mb-2" style="font-family: 'Cinzel', serif;">تم الاستلام — شكراً لك</h3>
-              <p class="text-gray-300 mb-4">شكراً لتواصلك معنا. تم إرسال طلبك بنجاح وسيتواصل معك فريقنا قريباً.</p>
-              <button id="contact-success-close" class="bg-transparent border border-amber-400 text-amber-300 px-4 py-2 rounded hover:bg-amber-400/10">أغلق</button>
-            </div>
-          </div>
-        </div>
-      </div>
      </div><!-- Contact Info -->
      <div class="text-center space-y-6">
       <div class="flex flex-col md:flex-row items-center justify-center gap-6 text-gray-400 flex-wrap"><a href="mailto:lfgateway2026@gmail.com" class="flex items-center gap-2 hover:text-amber-400 transition-colors">
@@ -401,7 +385,7 @@
    </section><!-- Footer -->
    <footer class="py-12 px-6 bg-black border-t border-amber-400/20">
     <div class="max-w-4xl mx-auto text-center"><!-- Logo -->
-     <img src="logo_new.png" alt="LF Gateway Logo" class="w-16 h-16 mx-auto mb-6">
+     <img src="/assets/logo_new-BOPnoPgr.png" alt="LF Gateway Logo" class="w-16 h-16 mx-auto mb-6">
      <p class="text-amber-400 italic text-lg mb-4 data-footer-motto" style="font-family: 'Cinzel', serif;">"Let it work. Leave it pass"</p>
      <p class="text-gray-500 text-sm data-footer-desc">A digital bridge between vision and capital.</p>
      <div class="mt-8 pt-8 border-t border-amber-400/10">
@@ -789,56 +773,6 @@
     } else {
       init();
     }
-    
-    // Contact form: submit via Fetch (AJAX) to avoid Formspree redirect
-    (function() {
-      const contactForm = document.getElementById('contact-form');
-      if (!contactForm) return;
-
-      const submitBtn = document.getElementById('contact-submit');
-      const successCard = document.getElementById('contact-success');
-
-      contactForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        submitBtn.disabled = true;
-        const originalText = submitBtn.textContent;
-        submitBtn.textContent = translations[currentLanguage]?.['data-sending'] || 'SENDING...';
-
-        try {
-          const res = await fetch(contactForm.action, {
-            method: 'POST',
-            body: new FormData(contactForm),
-            headers: { 'Accept': 'application/json' }
-          });
-
-          if (res.ok) {
-            contactForm.style.display = 'none';
-            successCard.classList.remove('hidden');
-            showToast(translations[currentLanguage]?.['data-submitting'] || 'SUBMITTED', 'success');
-          } else {
-            const data = await res.json().catch(() => null);
-            const msg = (data && data.error) ? data.error : 'Error sending message';
-            showToast(msg, 'error');
-          }
-        } catch (err) {
-          showToast('Network error. Please try again.', 'error');
-        } finally {
-          submitBtn.disabled = false;
-          submitBtn.textContent = originalText;
-        }
-      });
-
-      const closeBtn = document.getElementById('contact-success-close');
-      closeBtn?.addEventListener('click', () => {
-        successCard.classList.add('hidden');
-        contactForm.reset();
-        contactForm.style.display = 'block';
-        contactForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
-    })();
-  </script>
-  <script>
-  (function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="aJl6-QpYZLassNAdPo0nr";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
   </script>
  </body>
 </html>
