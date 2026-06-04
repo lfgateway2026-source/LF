@@ -358,7 +358,14 @@
 
   <input type="hidden" name="_replyto" value="lfgateway2026@gmail.com">
 
-  <button type="submit" style="background-color: #C5A059; color: black; padding: 10px 20px; border: none; cursor: pointer; font-weight: bold;">
+  <div class="mb-4">
+    <label for="consent-checkbox" class="flex items-start gap-3 text-sm" style="color:#cca152; line-height:1.5; display:flex; align-items:flex-start; gap:0.75rem; margin-bottom:1rem;">
+      <input id="consent-checkbox" type="checkbox" required style="min-width:1rem; min-height:1rem; accent-color:#cca152; border:1px solid #cca152; margin-top:0.2rem;" onchange="document.getElementById('contact-submit').disabled = !this.checked;">
+      <span class="data-consent-text">I confirm that all provided information is accurate and I agree that my data will be processed in accordance with the privacy policy.</span>
+    </label>
+  </div>
+
+  <button id="contact-submit" type="submit" disabled style="background-color: #C5A059; color: black; padding: 10px 20px; border: none; cursor: pointer; font-weight: bold;">
     إرسال الطلب
   </button>
 </form>
@@ -471,6 +478,7 @@
         'data-opt-other': 'Other',
         'data-message-label': 'Message',
         'data-send-message': 'SEND MESSAGE',
+        'data-consent-text': 'I confirm that all provided information is accurate and I agree that my data will be processed in accordance with the privacy policy.',
         'data-footer-motto': '"Let it work. Leave it pass"',
         'data-footer-desc': 'A digital bridge between vision and capital.',
         'data-footer-copy': '© 2026 LF Gateway. All rights reserved.',
@@ -549,6 +557,7 @@
         'data-opt-other': 'أخرى',
         'data-message-label': 'الرسالة',
         'data-send-message': 'إرسال الرسالة',
+        'data-consent-text': 'أؤكد أن جميع المعلومات المقدمة صحيحة وأوافق على معالجة بياناتي وفقاً لسياسة الخصوصية.',
         'data-footer-motto': '"دعه يعمل اتركه يمر"',
         'data-footer-desc': 'جسر رقمي بين الرؤية ورأس المال.',
         'data-footer-copy': '© 2026 بوابة LF. جميع الحقوق محفوظة.',
@@ -627,6 +636,7 @@
         'data-opt-other': 'Autre',
         'data-message-label': 'Message',
         'data-send-message': 'ENVOYER LE MESSAGE',
+        'data-consent-text': 'Je certifie que toutes les informations fournies sont exactes et j\'accepte que mes données soient traitées conformément à la politique de confidentialité.',
         'data-footer-motto': '"Laissez faire. Laissez passer"',
         'data-footer-desc': 'Un pont numérique entre la vision et le capital.',
         'data-footer-copy': '© 2026 Passerelle LF. Tous droits réservés.',
