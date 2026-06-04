@@ -434,9 +434,9 @@
               <svg class="w-6 h-6" fill="none" stroke="#cca152" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
             </div>
             <div>
-              <h3 class="text-xl font-semibold mb-2" style="font-family: 'Cinzel', serif; color:#cca152;">✓ Succès !</h3>
-              <p class="text-gray-300 mb-4">Vos données ont été envoyées avec succès. L'équipe LF Gateway vous contactera sous peu.</p>
-              <button id="contact-success-close" class="bg-transparent" style="color:#cca152; border:1px solid rgba(204,161,82,0.25); padding:8px 12px; border-radius:6px;">Fermer</button>
+              <h3 class="text-xl font-semibold mb-2 data-form-success-title" style="font-family: 'Cinzel', serif; color:#cca152;">✓ Succès !</h3>
+              <p class="text-gray-300 mb-4 data-form-success-msg">Vos données ont été envoyées avec succès. L'équipe LF Gateway vous contactera sous peu.</p>
+              <button id="contact-success-close" class="bg-transparent data-form-close" style="color:#cca152; border:1px solid rgba(204,161,82,0.25); padding:8px 12px; border-radius:6px;">Fermer</button>
             </div>
           </div>
         </div>
@@ -560,6 +560,9 @@
         'data-founder-bio-1': 'I am deeply convinced that great achievements are born from the alliance between solid capital and rigorous execution on the ground. For me, financial potential and human talent are two sides of the same coin: one propels what the other builds.',
         'data-founder-bio-2': 'This philosophy drives me forward every day: learning continuously, breaking the mold, and building bridges where others see barriers. My goal is simply to channel my energy and strategic mindset into this synergy, to turn shared ambitions into tangible economic success.',
         'data-founder-contact-btn': 'Contact me',
+        'data-form-success-title': 'Success!',
+        'data-form-success-msg': 'Message sent successfully!',
+        'data-form-close': 'Close',
       },
       ar: {
         'data-home': 'الرئيسية',
@@ -643,6 +646,9 @@
         'data-founder-bio-1': 'أنا مقتنع تماماً بأن النجاحات الكبرى تولد من تحالف رأس المال القوي والتنفيذ الدقيق على أرض الواقع. بالنسبة لي، الإمكانات المالية والموهبة البشرية وجهان لعملة واحدة: أحدهما يدفع ما يبنيه الآخر.',
         'data-founder-bio-2': 'هذه الفلسفة هي ما يدفعني للمضي قدماً كل يوم: التعلم المستمر، كسر القواعد، وبناء جسور حيث يرى الآخرون عوائق. هدفي ببساطة هو توظيف طاقتي وحسي الاستراتيجي في خدمة هذا التآزر، لتحويل الطموحات المشتركة إلى نجاحات اقتصادية ملموسة.',
         'data-founder-contact-btn': 'تواصل معي',
+        'data-form-success-title': 'تم بنجاح!',
+        'data-form-success-msg': 'تم إرسال رسالتك بنجاح!',
+        'data-form-close': 'إغلاق',
       },
       fr: {
         'data-home': 'ACCUEIL',
@@ -726,6 +732,9 @@
         "data-founder-bio-1": "Je suis profondément convaincu que les grandes réussites naissent de l'alliance entre un capital solide et une exécution rigoureuse sur le terrain. Pour moi, le potentiel financier et le talent humain sont les deux faces d'une même pièce : l'un propulse ce que l'autre bâtit.",
         "data-founder-bio-2": "C'est cette philosophie qui me pousse à avancer chaque jour : apprendre continuellement, briser les codes et bâtir des ponts là où d'autres voient des barrières. Mon but est simplement de mettre mon énergie et mon sens stratégique au service de cette synergie, pour transformer des ambitions partagées en succès économiques tangibles.",
         'data-founder-contact-btn': 'Me contacter',
+        'data-form-success-title': 'Succès !',
+        'data-form-success-msg': 'Message envoyé avec succès !',
+        'data-form-close': 'Fermer',
       }
     };
 
@@ -890,6 +899,15 @@
           });
 
           if (res.ok) {
+            // Update success card text based on current language
+            const titleEl = successCard.querySelector('.data-form-success-title');
+            const msgEl = successCard.querySelector('.data-form-success-msg');
+            const closeEl = successCard.querySelector('.data-form-close');
+            
+            if (titleEl) titleEl.textContent = translations[currentLanguage]['data-form-success-title'];
+            if (msgEl) msgEl.textContent = translations[currentLanguage]['data-form-success-msg'];
+            if (closeEl) closeEl.textContent = translations[currentLanguage]['data-form-close'];
+            
             // hide the form container and reveal the success card with a smooth transition
             const container = document.getElementById('contact-form-container');
             if (container) container.style.display = 'none';
@@ -898,7 +916,7 @@
               successCard.style.opacity = '1';
               successCard.style.transform = 'translateY(0)';
             });
-            showToast('Vos données ont été envoyées', 'success');
+            showToast(translations[currentLanguage]['data-form-success-msg'], 'success');
           } else {
             const data = await res.json().catch(() => null);
             const msg = (data && data.error) ? data.error : 'Erreur lors de l\'envoi';
